@@ -30,7 +30,7 @@ echo '$HOST_NAME,$HOST_IP $HOST_FINGERPRINT' \
 # $HOST_NAME is used in the above as well as in the below; that's why it is an env
 
 # run specified before script
-if [[ test -f "$RSYNC_BEFORE_SCRIPT" ]]; then
+if [[ $(test -f "$RSYNC_BEFORE_SCRIPT") == 0 ]]; then
     sh "$RSYNC_BEFORE_SCRIPT"
 fi
 
@@ -39,6 +39,6 @@ fi
 sh -c "rsync -r --delete-after --quiet -e 'ssh -o StrictHostKeyChecking=no' $*"
 
 # run after script
-if [[ test -f "$RSYNC_AFTER_SCRIPT" ]]; then
+if [[ $(test -f "$RSYNC_AFTER_SCRIPT") == 0 ]]; then
     sh "$RSYNC_AFTER_SCRIPT"
 fi
