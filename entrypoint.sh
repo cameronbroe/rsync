@@ -29,6 +29,16 @@ echo '$HOST_NAME,$HOST_IP $HOST_FINGERPRINT' \
   >> "$SSH_PATH/known_hosts"
 # $HOST_NAME is used in the above as well as in the below; that's why it is an env
 
+# run specified before script
+if [[ test -f "$RSYNC_BEFORE_SCRIPT" ]]; then
+    sh "$RSYNC_BEFORE_SCRIPT"
+fi
+
 # "args" from main.workflow get append to below call
 # these include source, user, $HOST and target
 sh -c "rsync -r --delete-after --quiet -e 'ssh -o StrictHostKeyChecking=no' $*"
+
+# run after script
+if [[ test -f "$RSYNC_AFTER_SCRIPT" ]]; then
+    sh "$RSYNC_AFTER_SCRIPT"
+fi
